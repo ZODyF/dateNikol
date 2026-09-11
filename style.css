@@ -1416,60 +1416,12 @@ html, body {
 }
 
 .wishes-input-wrapper {
-  margin: 22px 0 18px 0;
+  margin: 24px 0 28px 0;
   text-align: left;
 }
 
 .wishes-large-textarea {
-  min-height: 100px;
-}
-
-/* Suggestion Chips */
-.wishes-chips-container {
-  margin-bottom: 26px;
-  text-align: left;
-}
-
-.chips-label {
-  display: block;
-  font-family: var(--font-caps);
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  margin-bottom: 10px;
-}
-
-.wishes-chips-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.wish-chip {
-  background: #F6F2EA;
-  border: 1px solid var(--border-delicate);
-  border-radius: 20px;
-  padding: 7px 14px;
-  font-family: var(--font-serif-body);
-  font-size: 0.95rem;
-  color: var(--text-main);
-  cursor: pointer;
-  outline: none;
-  transition: all 0.25s ease;
-}
-
-.wish-chip:hover {
-  background: #EFE8DA;
-  border-color: var(--gold-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(197, 168, 128, 0.2);
-}
-
-.wish-chip.active {
-  background: var(--gold-primary);
-  color: #FFFFFF;
-  border-color: var(--gold-dark);
+  min-height: 125px;
 }
 
 .wishes-actions-wrap {

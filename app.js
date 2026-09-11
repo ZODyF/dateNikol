@@ -153,7 +153,6 @@ const wishesActivityName = document.getElementById('wishes-activity-name');
 const wishesRestaurantPill = document.getElementById('wishes-restaurant-pill');
 const wishesRestaurantName = document.getElementById('wishes-restaurant-name');
 const stageWishTextarea = document.getElementById('stage-wish-textarea');
-const wishChips = document.querySelectorAll('.wish-chip');
 const btnSubmitWishes = document.getElementById('btn-submit-wishes');
 const btnSkipWishes = document.getElementById('btn-skip-wishes');
 const btnBackFromWishes = document.getElementById('btn-back-from-wishes');
@@ -451,28 +450,8 @@ function openWishesStage(fromScreen) {
     stageWishTextarea.value = appState.customWish || '';
   }
 
-  // Reset chips state
-  wishChips.forEach(chip => chip.classList.remove('active'));
-
   switchStage(fromScreen, stageWishes);
 }
-
-// Quick Suggestion Chips
-wishChips.forEach(chip => {
-  chip.addEventListener('click', () => {
-    const text = chip.getAttribute('data-text');
-    if (!stageWishTextarea) return;
-
-    if (stageWishTextarea.value.trim().length > 0) {
-      if (!stageWishTextarea.value.includes(text)) {
-        stageWishTextarea.value += ', ' + text;
-      }
-    } else {
-      stageWishTextarea.value = text;
-    }
-    chip.classList.add('active');
-  });
-});
 
 // Submit with wishes
 if (btnSubmitWishes) {
