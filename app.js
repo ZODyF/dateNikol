@@ -115,6 +115,7 @@ const appState = {
   selectedActivity: null,
   selectedRestaurant: null,
   customWish: '',
+  previousScreenBeforeWishes: null,
   isSubmitting: false
 };
 
@@ -124,6 +125,7 @@ const appState = {
 const stage1 = document.getElementById('stage-1');
 const stage2 = document.getElementById('stage-2');
 const stage3 = document.getElementById('stage-3');
+const stageWishes = document.getElementById('stage-wishes');
 const stage4 = document.getElementById('stage-4');
 
 const envelopeScene = document.getElementById('envelope-scene');
@@ -145,6 +147,16 @@ const customRestaurantInput = document.getElementById('custom-restaurant-input')
 const btnCustomRestaurant = document.getElementById('btn-custom-restaurant');
 const restaurantCards = document.querySelectorAll('.restaurant-card');
 const btnBackToStage2 = document.getElementById('btn-back-to-stage2');
+
+// Wishes Stage Elements
+const wishesActivityName = document.getElementById('wishes-activity-name');
+const wishesRestaurantPill = document.getElementById('wishes-restaurant-pill');
+const wishesRestaurantName = document.getElementById('wishes-restaurant-name');
+const stageWishTextarea = document.getElementById('stage-wish-textarea');
+const wishChips = document.querySelectorAll('.wish-chip');
+const btnSubmitWishes = document.getElementById('btn-submit-wishes');
+const btnSkipWishes = document.getElementById('btn-skip-wishes');
+const btnBackFromWishes = document.getElementById('btn-back-from-wishes');
 
 const finalActivity = document.getElementById('final-activity');
 const finalFoodRow = document.getElementById('final-food-row');
@@ -340,8 +352,8 @@ document.addEventListener('keydown', (e) => {
 function handleActivityAcceptance(activity) {
   appState.selectedActivity = activity;
 
-  // If option 10, save custom wishes text
-  if (activity.id === 10 && wishInput) {
+  // If option 10, save custom wishes text if entered in modal
+  if (activity.id === 10 && wishInput && wishInput.value.trim()) {
     appState.customWish = wishInput.value.trim();
   }
 
@@ -352,9 +364,9 @@ function handleActivityAcceptance(activity) {
     stage3ActivityName.textContent = activity.title;
     switchStage(stage2, stage3);
   } else {
-    // Directly finalize and go to Stage 4
+    // Lead to Wishes Stage!
     appState.selectedRestaurant = '— (Прямо на свидание)';
-    finalizeSelection();
+    openWishesStage(stage2);
   }
 }
 
@@ -409,14 +421,92 @@ if (customRestaurantInput) {
 
 function selectRestaurant(restaurantName) {
   appState.selectedRestaurant = restaurantName;
-  finalizeSelection();
+  // Transition to Wishes Stage
+  openWishesStage(stage3);
+}
+
+// =========================================================
+// STAGE: WISHES CONTROLLER
+// =========================================================
+function openWishesStage(fromScreen) {
+  appState.previousScreenBeforeWishes = fromScreen;
+
+  // Set activity summary pill
+  if (wishesActivityName && appState.selectedActivity) {
+    wishesActivityName.textContent = appState.selectedActivity.title;
+  }
+
+  // Set restaurant summary pill if selected
+  if (wishesRestaurantPill && wishesRestaurantName) {
+    if (appState.selectedRestaurant && appState.selectedRestaurant !== '— (Прямо на свидание)') {
+      wishesRestaurantPill.style.display = 'inline-flex';
+      wishesRestaurantName.textContent = appState.selectedRestaurant;
+    } else {
+      wishesRestaurantPill.style.display = 'none';
+    }
+  }
+
+  // Pre-fill textarea if already filled
+  if (stageWishTextarea) {
+    stageWishTextarea.value = appState.customWish || '';
+  }
+
+  // Reset chips state
+  wishChips.forEach(chip => chip.classList.remove('active'));
+
+  switchStage(fromScreen, stageWishes);
+}
+
+// Quick Suggestion Chips
+wishChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    const text = chip.getAttribute('data-text');
+    if (!stageWishTextarea) return;
+
+    if (stageWishTextarea.value.trim().length > 0) {
+      if (!stageWishTextarea.value.includes(text)) {
+        stageWishTextarea.value += ', ' + text;
+      }
+    } else {
+      stageWishTextarea.value = text;
+    }
+    chip.classList.add('active');
+  });
+});
+
+// Submit with wishes
+if (btnSubmitWishes) {
+  btnSubmitWishes.addEventListener('click', () => {
+    if (stageWishTextarea) {
+      appState.customWish = stageWishTextarea.value.trim();
+    }
+    finalizeSelection();
+  });
+}
+
+// Skip wishes
+if (btnSkipWishes) {
+  btnSkipWishes.addEventListener('click', () => {
+    appState.customWish = '';
+    finalizeSelection();
+  });
+}
+
+// Back from wishes
+if (btnBackFromWishes) {
+  btnBackFromWishes.addEventListener('click', () => {
+    const returnTo = appState.previousScreenBeforeWishes || stage2;
+    switchStage(stageWishes, returnTo);
+  });
 }
 
 // =========================================================
 // FINALIZE SELECTION & TRANSITION TO STAGE 4
 // =========================================================
 function finalizeSelection() {
-  const currentScreen = stage3.classList.contains('active') ? stage3 : stage2;
+  const currentScreen = stageWishes.classList.contains('active')
+    ? stageWishes
+    : (stage3.classList.contains('active') ? stage3 : stage2);
   
   // Populate summary ticket in Stage 4
   finalActivity.textContent = appState.selectedActivity ? appState.selectedActivity.title : 'Не выбрано';

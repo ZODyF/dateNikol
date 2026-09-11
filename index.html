@@ -295,48 +295,6 @@
 
         </div>
       </div>
-
-      <!-- ACTIVITY DETAIL MODAL / POPUP -->
-      <div class="activity-modal-backdrop" id="activity-modal" aria-hidden="true">
-        <div class="activity-modal-content" role="dialog" aria-modal="true">
-          
-          <button class="modal-close-btn" id="modal-close-btn" aria-label="Закрыть">
-            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none">
-              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
-            </svg>
-          </button>
-
-          <div class="modal-inner-card">
-            <div class="modal-ornament-top">
-              <span class="crest-symbol">✦</span>
-            </div>
-
-            <span class="modal-numeral" id="modal-numeral">I</span>
-            <h3 class="modal-title" id="modal-title">Пирогов</h3>
-            
-            <div class="modal-divider">
-              <span class="divider-line"></span>
-              <span class="divider-diamond">◆</span>
-              <span class="divider-line"></span>
-            </div>
-
-            <p class="modal-description" id="modal-description">
-              «Ты говорила, что не была здесь, так что?»
-            </p>
-
-            <!-- Custom wishes input (appears for Option 10) -->
-            <div class="modal-custom-wish-wrap" id="modal-wish-box" style="display: none;">
-              <label for="wish-input" class="wish-label">Твое особое пожелание к вечеру (опционально):</label>
-              <textarea id="wish-input" class="luxury-input-textarea" placeholder="Например: какой фильм посмотрим, что приготовить или заказать..."></textarea>
-            </div>
-
-            <!-- Modal Action Buttons -->
-            <div class="modal-actions-wrap" id="modal-actions">
-              <!-- Dynamically populated by JS based on card type -->
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ========================================================= -->
@@ -519,6 +477,82 @@
     </section>
 
     <!-- ========================================================= -->
+    <!-- STAGE: WISHES SELECTION («ПОЖЕЛАНИЯ»)                     -->
+    <!-- ========================================================= -->
+    <section id="stage-wishes" class="stage-screen" aria-label="Особые пожелания к вечеру">
+      <div class="stage-inner wishes-container">
+        
+        <div class="wishes-card">
+          <div class="card-border-ornament"></div>
+          
+          <header class="section-heading-block">
+            <div class="vintage-crest">
+              <span class="crest-line"></span>
+              <span class="crest-symbol">✦</span>
+              <span class="crest-line"></span>
+            </div>
+            <span class="section-step-badge">Финальный штрих &bull; Пожелания</span>
+            <h2 class="section-title">Что сделает вечер идеальным?</h2>
+            <p class="section-subtitle">
+              Поделись любым пожеланием: во сколько встретимся, дресс-код, десерт, фильм или особая атмосфера. Если пожеланий нет — можно просто подтвердить.
+            </p>
+
+            <!-- Summary pill of choices made so far -->
+            <div class="wishes-summary-pill-group">
+              <div class="wishes-pill" id="wishes-activity-pill">
+                <span class="pill-prefix">Активность:</span>
+                <span class="pill-name" id="wishes-activity-name">Вечір джазу</span>
+              </div>
+              <div class="wishes-pill" id="wishes-restaurant-pill" style="display: none;">
+                <span class="pill-prefix">Гастрономия:</span>
+                <span class="pill-name" id="wishes-restaurant-name">—</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- Textarea for wishes -->
+          <div class="wishes-input-wrapper">
+            <label for="stage-wish-textarea" class="wish-label">Твое пожелание или мысль к свиданию:</label>
+            <textarea id="stage-wish-textarea" class="luxury-input-textarea wishes-large-textarea" placeholder="Например: хочу надеть то самое платье, давай встретимся в 19:00, или пусть все детали будут сюрпризом..."></textarea>
+          </div>
+
+          <!-- Quick suggestion chips -->
+          <div class="wishes-chips-container">
+            <span class="chips-label">Быстрые идеи в один клик:</span>
+            <div class="wishes-chips-grid">
+              <button type="button" class="wish-chip" data-text="Встретимся вечером (~19:00)">Встретимся в ~19:00</button>
+              <button type="button" class="wish-chip" data-text="Буду в том самом неотразимом платье">В том самом платье</button>
+              <button type="button" class="wish-chip" data-text="Хочу уютный вечер без спешки">Уютно и без спешки</button>
+              <button type="button" class="wish-chip" data-text="Пусть все детали будут для меня сюрпризом!">Пусть будет сюрпризом</button>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="wishes-actions-wrap">
+            <button type="button" id="btn-submit-wishes" class="btn-luxury-primary">
+              <span>Зафиксировать и отправить</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <button type="button" id="btn-skip-wishes" class="btn-luxury-secondary">
+              <span>Без пожеланий, сразу подтвердить</span>
+            </button>
+          </div>
+
+          <!-- Back button -->
+          <div class="wishes-back-wrap">
+            <button type="button" id="btn-back-from-wishes" class="btn-luxury-text">
+              <span>&larr; Изменить предыдущий выбор</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
     <!-- STAGE 4: FINAL CONFIRMATION & CELEBRATION                 -->
     <!-- ========================================================= -->
     <section id="stage-4" class="stage-screen" aria-label="Подтверждение свидания">
@@ -598,6 +632,48 @@
     </section>
 
   </main>
+
+  <!-- ACTIVITY DETAIL MODAL / POPUP (Direct child of body for 100% true viewport centering) -->
+  <div class="activity-modal-backdrop" id="activity-modal" aria-hidden="true">
+    <div class="activity-modal-content" role="dialog" aria-modal="true">
+      
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="modal-inner-card">
+        <div class="modal-ornament-top">
+          <span class="crest-symbol">✦</span>
+        </div>
+
+        <span class="modal-numeral" id="modal-numeral">I</span>
+        <h3 class="modal-title" id="modal-title">Пирогов</h3>
+        
+        <div class="modal-divider">
+          <span class="divider-line"></span>
+          <span class="divider-diamond">◆</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <p class="modal-description" id="modal-description">
+          «Ты говорила, что не была здесь, так что?»
+        </p>
+
+        <!-- Custom wishes input (appears for Option 10) -->
+        <div class="modal-custom-wish-wrap" id="modal-wish-box" style="display: none;">
+          <label for="wish-input" class="wish-label">Твое особое пожелание к вечеру (опционально):</label>
+          <textarea id="wish-input" class="luxury-input-textarea" placeholder="Например: какой фильм посмотрим, что приготовить или заказать..."></textarea>
+        </div>
+
+        <!-- Modal Action Buttons -->
+        <div class="modal-actions-wrap" id="modal-actions">
+          <!-- Dynamically populated by JS based on card type -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

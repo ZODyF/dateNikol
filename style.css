@@ -796,18 +796,24 @@ html, body {
 
 .activity-modal-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: rgba(28, 25, 22, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 100;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s var(--ease-luxury);
+  transition: opacity 0.35s var(--ease-luxury);
 }
 
 .activity-modal-backdrop.active {
@@ -818,7 +824,11 @@ html, body {
 .activity-modal-content {
   position: relative;
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--bg-paper-card);
   border-radius: 6px;
   box-shadow: 
@@ -826,8 +836,7 @@ html, body {
     0 8px 24px rgba(0, 0, 0, 0.15);
   border: 1px solid var(--gold-primary);
   transform: scale(0.92) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .activity-modal-backdrop.active .activity-modal-content {
@@ -1357,6 +1366,132 @@ html, body {
 }
 
 /* =========================================================
+   STAGE: WISHES SELECTION («ПОЖЕЛАНИЯ»)
+========================================================= */
+
+.wishes-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding-bottom: 50px;
+}
+
+.wishes-card {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  background: var(--bg-paper-card);
+  border: 1px solid var(--gold-primary);
+  border-radius: 6px;
+  padding: 42px 34px 38px;
+  box-shadow: var(--shadow-luxury);
+  animation: scaleFadeUp 0.7s var(--ease-luxury) forwards;
+}
+
+.wishes-card::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  pointer-events: none;
+}
+
+.wishes-summary-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.wishes-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #EFE9DE;
+  border: 1px solid var(--border-delicate);
+  border-radius: 20px;
+  padding: 5px 14px;
+}
+
+.wishes-input-wrapper {
+  margin: 22px 0 18px 0;
+  text-align: left;
+}
+
+.wishes-large-textarea {
+  min-height: 100px;
+}
+
+/* Suggestion Chips */
+.wishes-chips-container {
+  margin-bottom: 26px;
+  text-align: left;
+}
+
+.chips-label {
+  display: block;
+  font-family: var(--font-caps);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.wishes-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wish-chip {
+  background: #F6F2EA;
+  border: 1px solid var(--border-delicate);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.wish-chip:hover {
+  background: #EFE8DA;
+  border-color: var(--gold-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(197, 168, 128, 0.2);
+}
+
+.wish-chip.active {
+  background: var(--gold-primary);
+  color: #FFFFFF;
+  border-color: var(--gold-dark);
+}
+
+.wishes-actions-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+@media (min-width: 500px) {
+  .wishes-actions-wrap {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.wishes-back-wrap {
+  text-align: center;
+  margin-top: 18px;
+}
+
+/* =========================================================
    STAGE 4: FINAL CONFIRMATION & CELEBRATION
 ========================================================= */
 
@@ -1487,6 +1622,10 @@ html, body {
   color: var(--text-main);
   font-weight: 600;
   text-align: right;
+  max-width: 68%;
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-height: 1.35;
 }
 
 .status-badge {
