@@ -18,8 +18,8 @@ const ACTIVITIES_DATA = {
   1: {
     id: 1,
     numeral: 'I',
-    title: 'Пирогов',
-    description: '«Ты говорила, что не была здесь, так что?»',
+    title: 'Театральный вечер',
+    description: '«Красивые наряды, сцена, живые эмоции и особенная атмосфера для нас двоих»',
     type: 'direct',
     buttonText: 'Принимаю',
     leadsToFood: false
@@ -99,6 +99,15 @@ const ACTIVITIES_DATA = {
   10: {
     id: 10,
     numeral: 'X',
+    title: 'Пирогов',
+    description: '«Ты говорила, что не была здесь, так что?»',
+    type: 'direct',
+    buttonText: 'Принимаю',
+    leadsToFood: false
+  },
+  11: {
+    id: 11,
+    numeral: 'XI',
     title: 'Вкусно покушать, кино и 🔞',
     description: '«Хм… кабута уже база»',
     type: 'custom_wishes',
@@ -270,8 +279,8 @@ function openActivityModal(activityId) {
   modalTitle.textContent = data.title;
   modalDescription.textContent = data.description;
 
-  // Check if option 10 (Custom wishes)
-  if (data.id === 10) {
+  // Check if option 11 (Custom wishes)
+  if (data.id === 11 || data.type === 'custom_wishes') {
     modalWishBox.style.display = 'block';
     wishInput.value = appState.customWish || '';
   } else {
@@ -351,8 +360,8 @@ document.addEventListener('keydown', (e) => {
 function handleActivityAcceptance(activity) {
   appState.selectedActivity = activity;
 
-  // If option 10, save custom wishes text if entered in modal
-  if (activity.id === 10 && wishInput && wishInput.value.trim()) {
+  // If option 11 (custom wishes), save custom wishes text if entered in modal
+  if ((activity.id === 11 || activity.type === 'custom_wishes') && wishInput && wishInput.value.trim()) {
     appState.customWish = wishInput.value.trim();
   }
 
